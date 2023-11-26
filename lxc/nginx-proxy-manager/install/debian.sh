@@ -99,7 +99,9 @@ runcmd apt-get update && apt-get install -y -q --no-install-recommends openresty
 
 # Create User npm
 log "Create user"
-runcmd adduser npm --disabled-password --no-create-home --disabled-login --quiet
+if ! id -u "$1" >/dev/null 2>&1; then
+  runcmd adduser npm --disabled-password --no-create-home --disabled-login --quiet
+fi
 
 # Install nodejs
 log "Installing nodejs"
