@@ -88,12 +88,12 @@ runcmd pip install --no-cache-dir cffi certbot
 
 # Install openresty
 log "Installing openresty"
-wget -qO - https://openresty.org/package/pubkey.gpg | apt-key add -
+runcmd curl -fsSL https://openresty.org/package/pubkey.gpg | gpg --dearmor -o /etc/apt/keyrings/openresty.gpg
 _distro_release=$(wget $WGETOPT "http://openresty.org/package/$DISTRO_ID/dists/" -O - | grep -o "$DISTRO_CODENAME" | head -n1 || true)
 if [ $DISTRO_ID = "ubuntu" ]; then
-  echo "deb [trusted=yes] http://openresty.org/package/$DISTRO_ID ${_distro_release:-focal} main" | tee /etc/apt/sources.list.d/openresty.list
+  echo "deb [signed-by=/etc/apt/keyrings/openresty.gpg] http://openresty.org/package/$DISTRO_ID ${_distro_release:-focal} main" | tee /etc/apt/sources.list.d/openresty.list
 else
-  echo "deb [trusted=yes] http://openresty.org/package/$DISTRO_ID ${_distro_release:-bullseye} openresty" | tee /etc/apt/sources.list.d/openresty.list
+  echo "deb [signed-by=/etc/apt/keyrings/openresty.gpg] http://openresty.org/package/$DISTRO_ID ${_distro_release:-bullseye} openresty" | tee /etc/apt/sources.list.d/openresty.list
 fi
 runcmd apt-get update && apt-get install -y -q --no-install-recommends openresty
 
@@ -102,7 +102,7 @@ log "Installing nodejs"
 runcmd curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
 runcmd apt-get update
-runcmd apt-get install -y -q --no-install-recommends nodejs
+runcmd apt-get install -y apt-get install nodejs=16.20.2-deb-1nodesource1
 runcmd npm install --global yarn
 
 # Get latest version information for nginx-proxy-manager
