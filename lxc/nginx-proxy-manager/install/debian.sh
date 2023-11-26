@@ -101,8 +101,11 @@ runcmd apt-get update && apt-get install -y -q --no-install-recommends openresty
 log "Installing nodejs"
 runcmd curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+echo "Package: nodejs" | tee etc/apt/preferences.d/nodejs-NginxProxy
+echo "Pin: origin deb.nodesource.com" | tee etc/apt/preferences.d/nodejs-NginxProxy
+echo "Pin-Priority: 900" | tee etc/apt/preferences.d/nodejs-NginxProxy
 runcmd apt-get update
-runcmd apt-get install -y apt-get install nodejs=16.20.2-deb-1nodesource1
+runcmd apt-get install -y nodejs
 runcmd npm install --global yarn
 
 # Get latest version information for nginx-proxy-manager
