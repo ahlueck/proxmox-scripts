@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 TMP=/tmp/npm_install.sh
-URL=https://github.com/ahlueck/proxmox-scripts/raw/main/lxc/nginx-proxy-manager/install
+URL=https://raw.githubusercontent.com/ahlueck/proxmox-scripts/main/lxc/nginx-proxy-manager/install
 
 if [ "$(uname)" != "Linux" ]; then
   echo "OS NOT SUPPORTED"
